@@ -1,9 +1,10 @@
-package hexlet.code;
+package hexlet.code.schemas;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-public class StringSchema{
+public class StringSchema extends BaseSchema {
 
     private boolean required;
     private int minLength;
@@ -42,20 +43,20 @@ public class StringSchema{
 
     //!!END OF A TEST SEGMENT!!!
 
+    @Override
     public boolean isValid(Object obj) {
-        String str = obj instanceof String ? String.valueOf(obj) : "";
-        if (required && str.isEmpty()) {
+        //String str = obj instanceof String ? String.valueOf(obj) : "";
+        if (required && (Objects.isNull(obj) || !(obj instanceof String))) {
             return false;
-        } else if (minLength != 0 && str.length() < minLength) {
+        } else if (minLength != 0 && String.valueOf(obj).length() < minLength) {
             return false;
         } else if (!contains.isEmpty()) {
             for (String line : contains) {
-                if (!str.contains(line)) {
+                if (!String.valueOf(obj).contains(line)) {
                     return false;
                 }
             }
         }
         return true;
     }
-
 }
