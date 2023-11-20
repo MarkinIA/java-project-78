@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class StringSchema extends BaseSchema {
+public class StringSchema{
 
-    private boolean required;
-    private int minLength;
+    private static boolean required;
+    private static int minLength;
 
-    private List<String> contains = new ArrayList<>();
+    private static List<String> contains = new ArrayList<>();
     public StringSchema() {
 
     }
@@ -43,8 +43,7 @@ public class StringSchema extends BaseSchema {
 
     //!!END OF A TEST SEGMENT!!!
 
-    @Override
-    public boolean isValid(Object obj) {
+    public static boolean isValid(Object obj) {
         //String str = obj instanceof String ? String.valueOf(obj) : "";
         if (required && (Objects.isNull(obj) || !(obj instanceof String))) {
             return false;

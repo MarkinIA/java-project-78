@@ -1,9 +1,14 @@
 import static org.assertj.core.api.Assertions.assertThat;
 
+import hexlet.code.schemas.MapSchema;
 import hexlet.code.schemas.NumberSchema;
 import hexlet.code.schemas.StringSchema;
 import hexlet.code.Validator;
 import org.junit.jupiter.api.Test;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class AppTest {
     @Test
     void testStringSchema() {
@@ -49,5 +54,43 @@ public class AppTest {
         assertThat(schema.isValid(10)).isTrue();
         assertThat(schema.isValid(4)).isFalse();
         assertThat(schema.isValid(11)).isFalse();
+    }
+
+    @Test
+    void testMapSchema() throws Exception {
+        Validator v = new Validator();
+        MapSchema schema = v.map();
+        assertThat(schema.isValid(null)).isTrue(); // true
+
+        schema.required();
+
+        assertThat(schema.isValid(null)).isFalse(); // false
+        assertThat(schema.isValid(new HashMap())).isTrue(); // true
+        Map<String, String> data = new HashMap<>();
+        data.put("key1", "value1");
+        assertThat(schema.isValid(data)).isTrue(); // true
+
+        schema.sizeOf(2);
+
+        assertThat(schema.isValid(data)).isFalse();  // false
+        data.put("key2", "value2");
+        assertThat(schema.isValid(data)).isTrue(); // true
+    }
+
+    @Test
+    void testShapeValidation() throws Exception {
+        Validator v = new Validator();
+
+        MapSchema schema = v.map();
+
+        Map<String, StringSchema> schemas = new HashMap<>();
+
+        schemas.put("name", v.string().required());
+
+        schema.shape(schemas);
+
+        Map<String, Object> human1 = new HashMap<>();
+        human1.put("name", "Mark");
+        assertThat(schema.isValid(human1)).isTrue(); // true
     }
 }
