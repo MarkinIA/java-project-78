@@ -1,18 +1,19 @@
 package hexlet.code.schemas;
 
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class MapSchema {
+public class MapSchema extends BaseSchema {
 
     private boolean required = false;
 
     private int size;
     private boolean pickedSize = false;
 
-    private Map<String, StringSchema> stepMap = new HashMap<>();
+    private boolean shaped = false;
+
+    private Map<String, BaseSchema> stepMap = new HashMap<>();
 
     public MapSchema() {
 
@@ -22,25 +23,36 @@ public class MapSchema {
         return this;
     }
 
-    public MapSchema sizeOf(int size) {
-        this.size = size;
+    public MapSchema sizeOf(int num) {
+        this.size = num;
         this.pickedSize = true;
         return this;
     }
 
-    public boolean isValid(Object obj) throws Exception {
-        if (required && (Objects.isNull(obj) || !(obj instanceof Map))) {
-            return false;
-        } else if (pickedSize && !Objects.isNull(obj) && obj instanceof Map) {
+    public boolean isValid(Object obj) {
+        return checkRequired(obj) && checkSize(obj) && checkShaped(obj);
+    }
+
+    public boolean checkRequired(Object obj) {
+        return !required || (!Objects.isNull(obj) && obj instanceof Map);
+    }
+
+    public boolean checkSize(Object obj) {
+        if (pickedSize && !Objects.isNull(obj) && obj instanceof Map) {
             Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) obj);
             if (map.size() != size) {
                 return false;
             }
-        } else {
+        }
+        return true;
+    }
+
+    public boolean checkShaped(Object obj) {
+        if (shaped) {
             Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) obj);
             for (Map.Entry<String, Object> val : map.entrySet()) {
-                StringSchema stringSchema  = stepMap.get(val.getKey());
-                if (!stringSchema.isValid(val.getValue())) {
+                BaseSchema baseSchema  = stepMap.get(val.getKey());
+                if (!baseSchema.isValid(val.getValue())) {
                     return false;
                 }
             }
@@ -48,7 +60,8 @@ public class MapSchema {
         return true;
     }
 
-    public void shape(Map<String, StringSchema> data) {
+    public void shape(Map<String, BaseSchema> data) {
+        this.shaped = true;
         this.stepMap = data;
     }
 }

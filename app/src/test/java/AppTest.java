@@ -1,5 +1,6 @@
 import static org.assertj.core.api.Assertions.assertThat;
 
+import hexlet.code.schemas.BaseSchema;
 import hexlet.code.schemas.MapSchema;
 import hexlet.code.schemas.NumberSchema;
 import hexlet.code.schemas.StringSchema;
@@ -24,6 +25,10 @@ public class AppTest {
         assertThat(schema.isValid("what does the fox say")).isTrue();
         assertThat(schema.isValid("hexlet")).isTrue();
 
+        assertThat(schema.minLength(1).isValid("hexlet")).isTrue();
+        assertThat(schema.minLength(10).isValid("hexlet")).isFalse();
+
+
         assertThat(schema.contains("wh").isValid("what does the fox say")).isTrue();
         assertThat(schema.contains("what").isValid("what does the fox say")).isTrue();
         assertThat(schema.contains("whatthe").isValid("what does the fox say")).isFalse();
@@ -34,26 +39,26 @@ public class AppTest {
 
     @Test
     void testNumberSchema() {
-        Validator v = new Validator();
-        NumberSchema schema = v.number();
-        assertThat(schema.isValid(null)).isTrue();
-        assertThat(schema.positive().isValid(null)).isTrue();
+        Validator n = new Validator();
+        NumberSchema schemaNum = n.number();
+        assertThat(schemaNum.isValid(null)).isTrue();
+        assertThat(schemaNum.positive().isValid(null)).isTrue();
 
-        schema.required();
+        schemaNum.required();
 
-        assertThat(schema.isValid(null)).isFalse();
-        assertThat(schema.isValid("5")).isFalse();
-        assertThat(schema.isValid(10)).isTrue();
+        assertThat(schemaNum.isValid(null)).isFalse();
+        assertThat(schemaNum.isValid("5")).isFalse();
+        assertThat(schemaNum.isValid(10)).isTrue();
 
-        assertThat(schema.isValid(-10)).isFalse();
-        assertThat(schema.isValid(0)).isFalse();
+        assertThat(schemaNum.isValid(-10)).isFalse();
+        assertThat(schemaNum.isValid(0)).isFalse();
 
-        schema.range(5, 10);
+        schemaNum.range(5, 10);
 
-        assertThat(schema.isValid(5)).isTrue();
-        assertThat(schema.isValid(10)).isTrue();
-        assertThat(schema.isValid(4)).isFalse();
-        assertThat(schema.isValid(11)).isFalse();
+        assertThat(schemaNum.isValid(5)).isTrue();
+        assertThat(schemaNum.isValid(10)).isTrue();
+        assertThat(schemaNum.isValid(4)).isFalse();
+        assertThat(schemaNum.isValid(11)).isFalse();
     }
 
     @Test
@@ -83,14 +88,14 @@ public class AppTest {
 
         MapSchema schema = v.map();
 
-        Map<String, StringSchema> schemas = new HashMap<>();
+        Map<String, BaseSchema> schemas = new HashMap<>();
 
         schemas.put("name", v.string().required());
 
         schema.shape(schemas);
 
         Map<String, Object> human1 = new HashMap<>();
-        human1.put("name", "Mark");
-        assertThat(schema.isValid(human1)).isTrue(); // true
+        human1.put("name", "");
+        assertThat(schema.isValid(human1)).isFalse(); // true
     }
 }

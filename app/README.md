@@ -1,2 +1,1 @@
-1) Вынести всю логику в отдельный класс
-2) Перед каждой валидацией сначала проверять соотвествие передаваемых типов
+![example workflow](https://github.com/MarkinIA/java-project-78/actions/workflows/main.yml/badge.svg)
