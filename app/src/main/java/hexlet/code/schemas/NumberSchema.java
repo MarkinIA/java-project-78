@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class NumberSchema extends BaseSchema{
+public class NumberSchema extends BaseSchema {
     private boolean required = false;
     private boolean positive = false;
     private List<Integer> range = new ArrayList<>();
