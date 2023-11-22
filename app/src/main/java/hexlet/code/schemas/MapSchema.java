@@ -6,17 +6,19 @@ import java.util.Objects;
 
 public class MapSchema extends BaseSchema {
 
-    private boolean required = false;
+    private boolean required;
 
     private int size;
-    private boolean pickedSize = false;
+    private boolean pickedSize;
 
-    private boolean shaped = false;
+    private boolean shaped;
 
     private Map<String, BaseSchema> stepMap = new HashMap<>();
 
     public MapSchema() {
-
+        required = false;
+        pickedSize = false;
+        shaped = false;
     }
     public MapSchema required() {
         this.required = true;

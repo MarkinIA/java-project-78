@@ -83,7 +83,7 @@ public class AppTest {
     }
 
     @Test
-    void testShapeValidation() throws Exception {
+    void testShapeValidation() {
         Validator v = new Validator();
 
         MapSchema schema = v.map();

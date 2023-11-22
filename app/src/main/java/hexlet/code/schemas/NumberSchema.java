@@ -5,11 +5,12 @@ import java.util.List;
 import java.util.Objects;
 
 public class NumberSchema extends BaseSchema {
-    private boolean required = false;
-    private boolean positive = false;
+    private boolean required;
+    private boolean positive;
     private List<Integer> range = new ArrayList<>();
     public NumberSchema() {
-
+        required = false;
+        positive = false;
     }
 
     public NumberSchema required() {
