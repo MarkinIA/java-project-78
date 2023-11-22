@@ -23,7 +23,7 @@ public class MapSchema extends BaseSchema {
         return this;
     }
 
-    public MapSchema sizeOf(int num) {
+    public MapSchema sizeof(int num) {
         this.size = num;
         this.pickedSize = true;
         return this;

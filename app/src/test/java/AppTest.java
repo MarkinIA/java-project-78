@@ -75,7 +75,7 @@ public class AppTest {
         data.put("key1", "value1");
         assertThat(schema.isValid(data)).isTrue(); // true
 
-        schema.sizeOf(2);
+        schema.sizeof(2);
 
         assertThat(schema.isValid(data)).isFalse();  // false
         data.put("key2", "value2");
