@@ -24,8 +24,8 @@ public class MapSchema extends BaseSchema {
     public MapSchema sizeof(int num) {
         validationRules.add(m -> {
             //if (!Objects.isNull(m) && m instanceof Map) {
-                Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) m);
-                return map.size() == num;
+            Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) m);
+            return map.size() == num;
             //}
             //return true;
         });
