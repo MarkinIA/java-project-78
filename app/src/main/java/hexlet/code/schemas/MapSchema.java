@@ -34,16 +34,18 @@ public class MapSchema extends BaseSchema {
 
     public void shape(Map<String, BaseSchema> data) {
         this.stepMap = data;
-        validationRules.add(m -> {
-            Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) m);
-            for (Map.Entry<String, Object> val : map.entrySet()) {
-                BaseSchema baseSchema  = stepMap.get(val.getKey());
-                if (!baseSchema.isValid(val.getValue())) {
-                    return false;
+        if (!stepMap.isEmpty()) {
+            validationRules.add(m -> {
+                Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) m);
+                for (Map.Entry<String, Object> val : map.entrySet()) {
+                    BaseSchema baseSchema  = stepMap.get(val.getKey());
+                    if (!baseSchema.isValid(val.getValue())) {
+                        return false;
+                    }
                 }
-            }
-            return true;
-        });
+                return true;
+            });
+        }
     }
 
     public boolean isValid(Object obj) {

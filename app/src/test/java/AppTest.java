@@ -80,6 +80,7 @@ public class AppTest {
         assertThat(schema.isValid(data)).isFalse();  // false
         data.put("key2", "value2");
         assertThat(schema.isValid(data)).isTrue(); // true
+
     }
 
     @Test
@@ -98,7 +99,7 @@ public class AppTest {
         Map<String, Object> human1 = new HashMap<>();
         human1.put("name", "Kolya");
         human1.put("age", 100);
-        assertThat(schema.isValid(human1)).isTrue(); // true
+        assertThat(schema.isValid(human1)).isTrue();
 
         Map<String, Object> human2 = new HashMap<>();
         human2.put("name", "Maya");
@@ -114,5 +115,18 @@ public class AppTest {
         human4.put("name", "Valya");
         human4.put("age", -5);
         assertThat(schema.isValid(human4)).isFalse();
+
+        Validator v1 = new Validator();
+
+        MapSchema emptySchema = v1.map();
+
+        Map<String, BaseSchema> emptySchemas = new HashMap<>();
+
+        emptySchema.shape(emptySchemas);
+
+        Map<String, Object> human5 = new HashMap<>();
+        human5.put("name", "Valya");
+        human5.put("age", -5);
+        assertThat(emptySchema.isValid(human5)).isTrue();
     }
 }
