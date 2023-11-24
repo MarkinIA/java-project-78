@@ -33,7 +33,7 @@ public class NumberSchema extends BaseSchema {
 
     public boolean isValid(Object obj) {
         for (ValidationInterface validation : validationRules) {
-            if(!validation.validateData(obj)) {
+            if (!validation.validateData(obj)) {
                 return false;
             }
         }

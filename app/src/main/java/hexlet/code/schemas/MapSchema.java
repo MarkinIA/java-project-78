@@ -2,7 +2,11 @@ package hexlet.code.schemas;
 
 import hexlet.code.ValidationInterface;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.ArrayList;
 
 public class MapSchema extends BaseSchema {
     private List<ValidationInterface> validationRules;
@@ -44,7 +48,7 @@ public class MapSchema extends BaseSchema {
 
     public boolean isValid(Object obj) {
         for (ValidationInterface validation : validationRules) {
-            if(!validation.validateData(obj)) {
+            if (!validation.validateData(obj)) {
                 return false;
             }
         }

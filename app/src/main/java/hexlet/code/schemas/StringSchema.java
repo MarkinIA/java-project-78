@@ -10,7 +10,7 @@ public class StringSchema extends BaseSchema {
 
     private final List<ValidationInterface> validationRules = new ArrayList<>();
 
-    private static final List<String> contains = new ArrayList<>();
+    private static List<String> contains = new ArrayList<>();
 
     public StringSchema() {
     }
@@ -40,7 +40,7 @@ public class StringSchema extends BaseSchema {
 
     public boolean isValid(Object obj) {
         for (ValidationInterface validation : validationRules) {
-            if(!validation.validateData(obj)) {
+            if (!validation.validateData(obj)) {
                 return false;
             }
         }
