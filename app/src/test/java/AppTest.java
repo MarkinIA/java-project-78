@@ -70,7 +70,7 @@ public class AppTest {
         schema.required();
 
         assertThat(schema.isValid(null)).isFalse(); // false
-        assertThat(schema.isValid(new HashMap())).isTrue(); // true
+        assertThat(schema.isValid(new HashMap<>())).isTrue(); // true
         Map<String, String> data = new HashMap<>();
         data.put("key1", "value1");
         assertThat(schema.isValid(data)).isTrue(); // true
