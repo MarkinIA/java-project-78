@@ -1,69 +1,53 @@
 package hexlet.code.schemas;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import hexlet.code.ValidationInterface;
+
+import java.util.*;
 
 public class MapSchema extends BaseSchema {
-
-    private boolean required;
-
-    private int size;
-    private boolean pickedSize;
-
-    private boolean shaped;
+    private List<ValidationInterface> validationRules;
 
     private Map<String, BaseSchema> stepMap = new HashMap<>();
 
     public MapSchema() {
-        required = false;
-        pickedSize = false;
-        shaped = false;
+        validationRules = new ArrayList<>();
     }
     public MapSchema required() {
-        this.required = true;
+        validationRules.add(m -> (!Objects.isNull(m) && m instanceof Map));
         return this;
     }
 
     public MapSchema sizeof(int num) {
-        this.size = num;
-        this.pickedSize = true;
+        validationRules.add(m -> {
+            if (!Objects.isNull(m) && m instanceof Map) {
+                Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) m);
+                return map.size() == num;
+            }
+            return true;
+        });
         return this;
     }
 
-    public boolean isValid(Object obj) {
-        return checkRequired(obj) && checkSize(obj) && checkShaped(obj);
-    }
-
-    public boolean checkRequired(Object obj) {
-        return !required || (!Objects.isNull(obj) && obj instanceof Map);
-    }
-
-    public boolean checkSize(Object obj) {
-        if (pickedSize && !Objects.isNull(obj) && obj instanceof Map) {
-            Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) obj);
-            if (map.size() != size) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public boolean checkShaped(Object obj) {
-        if (shaped) {
-            Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) obj);
+    public void shape(Map<String, BaseSchema> data) {
+        this.stepMap = data;
+        validationRules.add(m -> {
+            Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) m);
             for (Map.Entry<String, Object> val : map.entrySet()) {
                 BaseSchema baseSchema  = stepMap.get(val.getKey());
                 if (!baseSchema.isValid(val.getValue())) {
                     return false;
                 }
             }
-        }
-        return true;
+            return true;
+        });
     }
 
-    public void shape(Map<String, BaseSchema> data) {
-        this.shaped = true;
-        this.stepMap = data;
+    public boolean isValid(Object obj) {
+        for (ValidationInterface validation : validationRules) {
+            if(!validation.validateData(obj)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

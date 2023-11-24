@@ -1,55 +1,47 @@
 package hexlet.code.schemas;
 
+import hexlet.code.ValidationInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class StringSchema extends BaseSchema {
 
-    private static boolean required;
-    private static boolean pickedMinLength;
-    private static int minLength;
+    private final List<ValidationInterface> validationRules = new ArrayList<>();
 
-    private static List<String> contains = new ArrayList<>();
+    private static final List<String> contains = new ArrayList<>();
+
     public StringSchema() {
-        required = false;
-        pickedMinLength = false;
     }
     public StringSchema required() {
-        StringSchema.required = true;
+        validationRules.add(p -> (!Objects.isNull(p) && p instanceof String
+                && !String.valueOf(p).isEmpty()));
         return this;
     }
 
     public StringSchema minLength(int length) {
-        pickedMinLength = true;
-        StringSchema.minLength = length;
+        validationRules.add(p -> (String.valueOf(p).length() >= length));
         return this;
     }
 
     public StringSchema contains(String str) {
         StringSchema.contains.add(str);
+        validationRules.add(p -> {
+            for (String line : contains) {
+                if (!String.valueOf(p).contains(line)) {
+                    return false;
+                }
+            }
+            return true;
+        });
         return this;
     }
 
     public boolean isValid(Object obj) {
-        return checkRequired(obj) && checkContent(obj) && checkLength(obj);
-    }
-
-    public boolean checkRequired(Object obj) {
-        return !required || (!Objects.isNull(obj) && obj instanceof String
-                && !String.valueOf(obj).isEmpty());
-    }
-
-    public boolean checkLength(Object obj) {
-        return !pickedMinLength || String.valueOf(obj).length() >= minLength;
-    }
-
-    public boolean checkContent(Object obj) {
-        if (!contains.isEmpty()) {
-            for (String line : contains) {
-                if (!String.valueOf(obj).contains(line)) {
-                    return false;
-                }
+        for (ValidationInterface validation : validationRules) {
+            if(!validation.validateData(obj)) {
+                return false;
             }
         }
         return true;

@@ -1,51 +1,43 @@
 package hexlet.code.schemas;
 
+import hexlet.code.ValidationInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class NumberSchema extends BaseSchema {
-    private boolean required;
-    private boolean positive;
+    private List<ValidationInterface> validationRules;
     private List<Integer> range = new ArrayList<>();
     public NumberSchema() {
-        required = false;
-        positive = false;
+        validationRules = new ArrayList<>();
     }
 
     public NumberSchema required() {
-        this.required = true;
+        validationRules.add(v -> (!Objects.isNull(v) && v instanceof Integer));
         return this;
     }
 
     public NumberSchema positive() {
-        this.positive = true;
+        validationRules.add(v -> (Objects.isNull(v) || Integer.parseInt(v.toString()) >= 1));
         return this;
     }
     public NumberSchema range(int start, int end) {
         this.range = List.of(start, end);
+        validationRules.add(v -> {
+            int num = Integer.parseInt(v.toString());
+            return (num >= range.get(0)) && (num <= range.get(1));
+        });
         return this;
     }
 
     public boolean isValid(Object obj) {
-        return checkRequired(obj) && checkPositive(obj) && checkRange(obj);
-    }
-
-    public boolean checkRequired(Object obj) {
-        return !required || (!Objects.isNull(obj) && obj instanceof Integer);
-    }
-
-    public boolean checkPositive(Object obj) {
-        return !positive || (Objects.isNull(obj) || Integer.parseInt(obj.toString()) >= 1);
-    }
-
-    public boolean checkRange(Object obj) {
-        if (!range.isEmpty()) {
-            int num = Integer.parseInt(obj.toString());
-            if (!((num >= range.get(0)) && (num <= range.get(1)))) {
+        for (ValidationInterface validation : validationRules) {
+            if(!validation.validateData(obj)) {
                 return false;
             }
         }
         return true;
     }
+
 }
