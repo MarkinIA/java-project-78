@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Objects;
 import java.util.ArrayList;
 
-public class MapSchema extends BaseSchema {
+public final class MapSchema extends BaseSchema {
     private List<ValidationInterface> validationRules;
 
     private Map<String, BaseSchema> stepMap = new HashMap<>();
@@ -44,6 +44,7 @@ public class MapSchema extends BaseSchema {
                         });
                 for (Map.Entry<String, Object> val : map.entrySet()) {
                     BaseSchema baseSchema  = stepMap.get(val.getKey());
+                    //Добавлено для выявления возможного плохого тест кейса для автотестов
                     if (stepMap.containsKey(val.getKey())) {
                         if (!baseSchema.isValid(val.getValue())) {
                             return false;

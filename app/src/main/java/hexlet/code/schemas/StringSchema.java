@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class StringSchema extends BaseSchema {
+public final class StringSchema extends BaseSchema {
 
     private List<ValidationInterface> validationRules;
 

@@ -87,7 +87,7 @@ public class AppTest {
     void testShapeValidation() {
         Validator v = new Validator();
 
-        /*MapSchema schema = v.map();
+        MapSchema schema = v.map();
 
         Map<String, BaseSchema> schemas = new HashMap<>();
 
@@ -127,7 +127,7 @@ public class AppTest {
         Map<String, Object> human5 = new HashMap<>();
         human5.put("name", "Valya");
         human5.put("age", -5);
-        assertThat(emptySchema.isValid(human5)).isTrue();*/
+        assertThat(emptySchema.isValid(human5)).isTrue();
 
         MapSchema schema1 = v.map();
 

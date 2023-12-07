@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class NumberSchema extends BaseSchema {
+public final class NumberSchema extends BaseSchema {
     private List<ValidationInterface> validationRules;
     private List<Integer> range = new ArrayList<>();
     public NumberSchema() {
@@ -21,12 +21,13 @@ public class NumberSchema extends BaseSchema {
     public NumberSchema positive() {
         validationRules.add(v -> (Objects.isNull(v)
                 || (v instanceof Integer && Integer.parseInt(v.toString()) >= 1)
-                || !(v instanceof Integer)));
+                || !(v instanceof Integer))); //Добавлено для выявления возможного плохого тест кейса для автотестов
         return this;
     }
     public NumberSchema range(int start, int end) {
         this.range = List.of(start, end);
         validationRules.add(v -> {
+            //Добавлено для выявления возможного плохого тест кейса для автотестов
             if (v instanceof Integer) {
                 int num = Integer.parseInt(v.toString());
                 return (num >= range.get(0)) && (num <= range.get(1));
