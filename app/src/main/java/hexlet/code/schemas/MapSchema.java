@@ -44,8 +44,10 @@ public class MapSchema extends BaseSchema {
                         });
                 for (Map.Entry<String, Object> val : map.entrySet()) {
                     BaseSchema baseSchema  = stepMap.get(val.getKey());
-                    if (stepMap.containsKey(val.getKey()) && !baseSchema.isValid(val.getValue())) {
-                        return false;
+                    if (stepMap.containsKey(val.getKey())) {
+                        if (!baseSchema.isValid(val.getValue())) {
+                            return false;
+                        }
                     }
                 }
                 return true;

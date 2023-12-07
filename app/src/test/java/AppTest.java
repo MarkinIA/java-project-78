@@ -132,12 +132,12 @@ public class AppTest {
         MapSchema schema1 = v.map();
 
         Map<String, BaseSchema> schemas1 = new HashMap<>();
-        schemas1.put("name", v.number().positive());
+        schemas1.put("name", v.string());
         schema1.shape(schemas1);
 
         Map<String, Object> actualSmth = new HashMap<>();
 
-        actualSmth.put("name", "Kolya");
+        actualSmth.put("name", 25);
         actualSmth.put("age", 100);
 
         assertThat(schema1.isValid(actualSmth)).isTrue();
