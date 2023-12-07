@@ -19,7 +19,9 @@ public class NumberSchema extends BaseSchema {
     }
 
     public NumberSchema positive() {
-        validationRules.add(v -> (Objects.isNull(v) || Integer.parseInt(v.toString()) >= 1));
+        validationRules.add(v -> (Objects.isNull(v)
+                || (v instanceof Integer && Integer.parseInt(v.toString()) >= 1)
+                || !(v instanceof Integer)));
         return this;
     }
     public NumberSchema range(int start, int end) {

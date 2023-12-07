@@ -7,13 +7,12 @@ import hexlet.code.schemas.StringSchema;
 import hexlet.code.Validator;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AppTest {
     @Test
-    void testStringSchema() throws IOException {
+    void testStringSchema() {
         Validator v = new Validator();
         StringSchema schema = v.string();
 
@@ -39,11 +38,11 @@ public class AppTest {
     }
 
     @Test
-    void testNumberSchema() throws IOException {
+    void testNumberSchema() {
         Validator n = new Validator();
         NumberSchema schemaNum = n.number();
         assertThat(schemaNum.isValid(null)).isTrue();
-        assertThat(schemaNum.positive().isValid(null)).isTrue();
+        assertThat(schemaNum.positive().isValid("Kolya")).isTrue();
 
         schemaNum.required();
 
@@ -63,7 +62,7 @@ public class AppTest {
     }
 
     @Test
-    void testMapSchema() throws IOException {
+    void testMapSchema() {
         Validator v = new Validator();
         MapSchema schema = v.map();
         assertThat(schema.isValid(null)).isTrue(); // true
@@ -85,7 +84,7 @@ public class AppTest {
     }
 
     @Test
-    void testShapeValidation() throws IOException {
+    void testShapeValidation() {
         Validator v = new Validator();
 
         MapSchema schema = v.map();
@@ -129,5 +128,26 @@ public class AppTest {
         human5.put("name", "Valya");
         human5.put("age", -5);
         assertThat(emptySchema.isValid(human5)).isTrue();
+
+        MapSchema schema1 = v.map();
+
+        Map<String, BaseSchema> schemas1 = new HashMap<>();
+        schemas1.put("name", v.number().positive());
+        schema1.shape(schemas1);
+
+        Map<String, Object> actualSmth = new HashMap<>();
+
+        actualSmth.put("name", "Kolya");
+        actualSmth.put("age", 100);
+
+        assertThat(schema1.isValid(actualSmth)).isTrue();
+
+        Map<String, Object> actualSmth1 = new HashMap<>();
+
+        actualSmth1.put("name", "Maya");
+        actualSmth1.put("age", null);
+
+        assertThat(schema1.isValid(actualSmth1)).isTrue();
+
     }
 }

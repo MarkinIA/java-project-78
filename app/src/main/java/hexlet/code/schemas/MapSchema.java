@@ -29,7 +29,6 @@ public class MapSchema extends BaseSchema {
             Map<String, Object> map = mapper
                     .convertValue(m, new TypeReference<>() {
                     });
-            //Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) m);
             return map.size() == num;
         });
         return this;
@@ -45,7 +44,7 @@ public class MapSchema extends BaseSchema {
                         });
                 for (Map.Entry<String, Object> val : map.entrySet()) {
                     BaseSchema baseSchema  = stepMap.get(val.getKey());
-                    if (!baseSchema.isValid(val.getValue())) {
+                    if (stepMap.containsKey(val.getKey()) && !baseSchema.isValid(val.getValue())) {
                         return false;
                     }
                 }
