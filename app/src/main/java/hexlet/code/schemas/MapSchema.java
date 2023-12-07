@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.ValidationInterface;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -55,7 +54,7 @@ public class MapSchema extends BaseSchema {
         }
     }
 
-    public boolean isValid(Object obj) throws IOException {
+    public boolean isValid(Object obj) {
         for (ValidationInterface validation : validationRules) {
             if (!validation.validateData(obj)) {
                 return false;
