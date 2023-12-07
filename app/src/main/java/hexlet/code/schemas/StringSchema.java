@@ -2,6 +2,7 @@ package hexlet.code.schemas;
 
 import hexlet.code.ValidationInterface;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -38,7 +39,7 @@ public class StringSchema extends BaseSchema {
         return this;
     }
 
-    public boolean isValid(Object obj) {
+    public boolean isValid(Object obj) throws IOException {
         for (ValidationInterface validation : validationRules) {
             if (!validation.validateData(obj)) {
                 return false;

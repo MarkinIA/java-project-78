@@ -1,7 +1,10 @@
 package hexlet.code.schemas;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import hexlet.code.ValidationInterface;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
@@ -23,11 +26,12 @@ public class MapSchema extends BaseSchema {
 
     public MapSchema sizeof(int num) {
         validationRules.add(m -> {
-            //if (!Objects.isNull(m) && m instanceof Map) {
-            Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) m);
+            ObjectMapper mapper = new ObjectMapper();
+            Map<String, Object> map = mapper
+                    .convertValue(m, new TypeReference<>() {
+                    });
+            //Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) m);
             return map.size() == num;
-            //}
-            //return true;
         });
         return this;
     }
@@ -36,7 +40,10 @@ public class MapSchema extends BaseSchema {
         this.stepMap = data;
         if (!stepMap.isEmpty()) {
             validationRules.add(m -> {
-                Map<String, Object> map = new HashMap<>((Map<? extends String, ?>) m);
+                ObjectMapper mapper = new ObjectMapper();
+                Map<String, Object> map = mapper
+                        .convertValue(m, new TypeReference<>() {
+                        });
                 for (Map.Entry<String, Object> val : map.entrySet()) {
                     BaseSchema baseSchema  = stepMap.get(val.getKey());
                     if (!baseSchema.isValid(val.getValue())) {
@@ -48,7 +55,7 @@ public class MapSchema extends BaseSchema {
         }
     }
 
-    public boolean isValid(Object obj) {
+    public boolean isValid(Object obj) throws IOException {
         for (ValidationInterface validation : validationRules) {
             if (!validation.validateData(obj)) {
                 return false;

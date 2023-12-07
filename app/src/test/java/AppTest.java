@@ -7,12 +7,13 @@ import hexlet.code.schemas.StringSchema;
 import hexlet.code.Validator;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 public class AppTest {
     @Test
-    void testStringSchema() {
+    void testStringSchema() throws IOException {
         Validator v = new Validator();
         StringSchema schema = v.string();
 
@@ -38,7 +39,7 @@ public class AppTest {
     }
 
     @Test
-    void testNumberSchema() {
+    void testNumberSchema() throws IOException {
         Validator n = new Validator();
         NumberSchema schemaNum = n.number();
         assertThat(schemaNum.isValid(null)).isTrue();
@@ -62,7 +63,7 @@ public class AppTest {
     }
 
     @Test
-    void testMapSchema() {
+    void testMapSchema() throws IOException {
         Validator v = new Validator();
         MapSchema schema = v.map();
         assertThat(schema.isValid(null)).isTrue(); // true
@@ -84,7 +85,7 @@ public class AppTest {
     }
 
     @Test
-    void testShapeValidation() {
+    void testShapeValidation() throws IOException {
         Validator v = new Validator();
 
         MapSchema schema = v.map();
