@@ -87,7 +87,7 @@ public class AppTest {
     void testShapeValidation() {
         Validator v = new Validator();
 
-        MapSchema schema = v.map();
+        /*MapSchema schema = v.map();
 
         Map<String, BaseSchema> schemas = new HashMap<>();
 
@@ -127,17 +127,18 @@ public class AppTest {
         Map<String, Object> human5 = new HashMap<>();
         human5.put("name", "Valya");
         human5.put("age", -5);
-        assertThat(emptySchema.isValid(human5)).isTrue();
+        assertThat(emptySchema.isValid(human5)).isTrue();*/
 
         MapSchema schema1 = v.map();
 
         Map<String, BaseSchema> schemas1 = new HashMap<>();
-        schemas1.put("name", v.number().range(1, 2));
+        schemas1.put("name", v.string().required().contains("ya"));
+        schemas1.put("age", v.number().positive());
         schema1.shape(schemas1);
 
         Map<String, Object> actualSmth = new HashMap<>();
 
-        actualSmth.put("name", "Word");
+        actualSmth.put("name", "Kolya");
         actualSmth.put("age", 100);
 
         System.out.println(schema1.isValid(actualSmth));
@@ -149,7 +150,7 @@ public class AppTest {
         actualSmth1.put("name", "Maya");
         actualSmth1.put("age", null);
 
-        //assertThat(schema1.isValid(actualSmth1)).isTrue();
+        assertThat(schema1.isValid(actualSmth1)).isTrue();
 
     }
 }

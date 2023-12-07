@@ -8,11 +8,13 @@ import java.util.Objects;
 
 public class StringSchema extends BaseSchema {
 
-    private final List<ValidationInterface> validationRules = new ArrayList<>();
+    private List<ValidationInterface> validationRules;
 
-    private static List<String> contains = new ArrayList<>();
+    private static List<String> contains;
 
     public StringSchema() {
+        validationRules = new ArrayList<>();
+        contains = new ArrayList<>();
     }
     public StringSchema required() {
         validationRules.add(p -> (!Objects.isNull(p) && p instanceof String
