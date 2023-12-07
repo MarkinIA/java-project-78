@@ -27,8 +27,11 @@ public class NumberSchema extends BaseSchema {
     public NumberSchema range(int start, int end) {
         this.range = List.of(start, end);
         validationRules.add(v -> {
-            int num = Integer.parseInt(v.toString());
-            return (num >= range.get(0)) && (num <= range.get(1));
+            if (v instanceof Integer) {
+                int num = Integer.parseInt(v.toString());
+                return (num >= range.get(0)) && (num <= range.get(1));
+            }
+            return true;
         });
         return this;
     }
