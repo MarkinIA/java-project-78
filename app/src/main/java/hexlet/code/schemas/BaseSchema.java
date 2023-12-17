@@ -10,7 +10,9 @@ public class BaseSchema {
     protected boolean isRequired = false;
 
     public final boolean isValid(Object obj) {
-        if (isRequired || !Objects.isNull(obj)) {
+        if (!isRequired && Objects.isNull(obj)) {
+            return true;
+        } else {
             for (Predicate<Object> validation : validationRules) {
                 if (!validation.test(obj)) {
                     return false;

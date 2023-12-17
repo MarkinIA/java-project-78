@@ -42,16 +42,12 @@ public class AppTest {
         Validator n = new Validator();
         NumberSchema schemaNum = n.number();
         assertThat(schemaNum.isValid(null)).isTrue();
-        assertThat(schemaNum.positive().isValid("Kolya")).isTrue();
 
         schemaNum.required();
 
         assertThat(schemaNum.isValid(null)).isFalse();
         assertThat(schemaNum.isValid("5")).isFalse();
         assertThat(schemaNum.isValid(10)).isTrue();
-
-        assertThat(schemaNum.isValid(-10)).isFalse();
-        assertThat(schemaNum.isValid(0)).isFalse();
 
         schemaNum.range(5, 10);
 

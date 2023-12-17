@@ -8,7 +8,6 @@ public final class StringSchema extends BaseSchema {
     private static List<String> contains = new ArrayList<>();
 
     public StringSchema() {
-        validationRules = new ArrayList<>();
     }
     public StringSchema required() {
         validationRules.add(p -> (!Objects.isNull(p) && p instanceof String

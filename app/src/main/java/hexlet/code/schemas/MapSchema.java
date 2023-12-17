@@ -3,13 +3,11 @@ package hexlet.code.schemas;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Objects;
-import java.util.ArrayList;
 
 public final class MapSchema extends BaseSchema {
     private Map<String, BaseSchema> stepMap = new HashMap<>();
 
     public MapSchema() {
-        validationRules = new ArrayList<>();
     }
     public MapSchema required() {
         validationRules.add(m -> (!Objects.isNull(m) && m instanceof Map));
